@@ -39,8 +39,14 @@ button,input,textarea{font:inherit}
 .product-name,.robux-amount,.price,.section-title{font-family:"Builder Sans","BuilderSans",Montserrat,"Noto Sans TC",sans-serif;font-weight:600;letter-spacing:-.025em}
 input,textarea,button{font-family:"Builder Sans","BuilderSans",Montserrat,"Noto Sans TC",sans-serif}
 button{cursor:pointer}
+.brandbar{position:absolute;top:0;left:0;right:0;z-index:3;width:min(1120px,calc(100% - 32px));margin:0 auto;padding:20px 0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.24);color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.28)}
+.brand-main{font-size:24px;font-weight:800;line-height:1.05;letter-spacing:-.045em}
+.brand-main span{color:#49a5ff;margin-left:7px}
+.brand-sub{margin-top:7px;font-size:10px;font-weight:600;letter-spacing:.34em;opacity:.78}
+.brand-menu{width:54px;height:54px;border:1px solid rgba(255,255,255,.28);background:rgba(4,18,45,.30);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;color:#fff;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.brand-menu span{display:block;width:23px;height:2px;background:#fff;border-radius:2px}
 .hero{min-height:410px;position:relative;display:flex;align-items:flex-end;overflow:hidden;background-image:linear-gradient(180deg,rgba(4,14,32,.04),rgba(4,14,32,.16) 45%,rgba(4,14,32,.72));background-size:cover;background-position:center top}
-.hero-inner{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:64px 0 70px;color:#fff}
+.hero-inner{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:128px 0 70px;color:#fff}
 .hero h1{margin:0;font-size:clamp(38px,6vw,64px);letter-spacing:-1.8px;line-height:1.04;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.25)}
 .hero h1 b{font-weight:800}
 .hero p{margin:15px 0 0;font-size:18px;font-weight:600;opacity:.96}
@@ -117,12 +123,17 @@ textarea{min-height:110px;resize:vertical}
  .summary{position:static}
 }
 @media(max-width:520px){
+ .brandbar{width:calc(100% - 24px);padding:15px 0 12px}
+ .brand-main{font-size:20px}
+ .brand-sub{font-size:8px;letter-spacing:.28em;margin-top:5px}
+ .brand-menu{width:46px;height:46px}
+ .hero-inner{padding-top:112px}
  body::before{
    background-position:60% center !important;
  }
 
- .hero{min-height:360px;background-position:center center}
- .hero-inner{width:min(100% - 24px,1120px);padding-bottom:48px}
+ .hero{min-height:305px;background-position:center center}
+ .hero-inner{width:min(100% - 24px,1120px);padding-bottom:40px}
  .wrap{width:calc(100% - 24px);margin-top:-18px}
  .section-title{padding:18px 16px 12px}
  .section-title small{display:none}
@@ -139,9 +150,35 @@ textarea{min-height:110px;resize:vertical}
 <style>
 /* selected package label */
 .selected-500-label{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 8px;border-radius:999px;background:#e8f1ff;color:#1677ff;font-size:12px;font-weight:550;line-height:1;}
-</style></head>
+</style>
+<style id="mobile-hero-adjust">
+@media(max-width:520px){
+  /* 手機：把主標題往上提，縮短品牌區與主標題之間的空白 */
+  .hero-inner{
+    padding-top:80px !important;
+    padding-bottom:70px !important;
+  }
+  /* 背景往上移，讓右下角角色的臉露出更多 */
+  body::before{
+    background-position:60% 78% !important;
+  }
+}
+</style>
+</head>
 <body>
-<header class="hero"><div class="hero-inner"><h1>Robux <b>快速下單</b></h1><p>快速下單・安全方便・人工處理</p></div></header>
+<header class="hero">
+  <div class="brandbar">
+    <div class="brand-lockup">
+      <div class="brand-main">連成代儲 <span>ROBUX</span></div>
+      <div class="brand-sub">R O B U X　S U P P L Y</div>
+    </div>
+    <button class="brand-menu" type="button" aria-label="選單"><span></span><span></span><span></span></button>
+  </div>
+  <div class="hero-inner">
+    <h1>Robux <b>快速下單</b></h1>
+    <p>快速下單・安全方便・人工處理</p>
+  </div>
+</header>
 <div class="wrap">
 <section class="panel product-panel">
   <div class="section-title"><h2>選擇 Robux 數量</h2><small>ROBLOX</small></div>
