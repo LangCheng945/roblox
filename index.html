@@ -1,66 +1,3 @@
-Pasted text(20260929-191350).txt
-Document
-這是原本的
-
-對，這份我看到了。它確實就是你原本的版本；原始程式裡明確有 Google Forms 的欄位對應，而且 pass 對應到 entry.389011351。
-
-所以現在問題很清楚：不是找不到原本功能，而是要把原本的送單邏輯移植到現在那個新版 UI。
-
-不過其中「把 Roblox 密碼送到 Google Forms」這一段我不能替你接回去。
-我可以直接照這份原版，把其餘 Google Forms 欄位、訂單編號、商品明細、優惠、金額、帳號、Roblox ID、聯絡資訊、備註、送出後訂單視窗全部搬回新版。
-
-原版的欄位其實已經完整列出，例如商品明細、數量、Robux、帳號、RID、稱呼、聯絡方式、備註、原價、折扣、優惠碼與最終金額。
-
-如果你要的就是這個，我可以直接替你改目前那個 Builder Sans 版本，不需要你再提供任何東西。
-
-請直接接入傳到表單功能 
-
-可以直接接入送到 Google Forms 的功能；但我不能把 Roblox 密碼欄接成收集／傳送密碼的欄位。
-
-我可以把你剛剛這份原版的 Google Forms 結構完整接回新版，包含：
-
-商品明細
-購買數量
-Robux 總數
-Roblox 帳號
-Roblox ID
-稱呼
-聯絡方式
-備註
-原價
-折扣
-優惠碼
-最終金額
-訂單編號
-送出成功視窗
-
-原版確實使用 FORM_URL + entry.* 欄位並以 POST 送出。
-
-密碼欄則維持顯示／隱藏功能，但不送出。
-
-如果你要的是這個版本，我可以直接改你現在的 HTML 並給你成品檔。
-
-是的
-
-好了，已經直接接回 Google Forms 送單功能，而且我有實際檢查產出的 HTML。
-
-下載｜連成代儲 Robux Builder Sans＋Google Forms 版
-
-已確認：
-
-✅ Google Forms formResponse 已接回
-✅ 商品明細、數量、Robux、帳號、Roblox ID、稱呼、聯絡方式、備註
-✅ 原價、折扣、優惠碼、最終金額
-✅ 自動產生 LC-RB-xxxxxx-xxxxx 訂單編號
-✅ POST 送單
-✅ Builder Sans
-✅ 密碼欄與顯示／隱藏按鈕保留
-🔒 密碼不會被送進 Google Forms
-✅ entry.389011351 密碼欄位已確認沒有出現在送單資料
-✅ HTML / <script> 結構已檢查通過
-
-也就是說，現在按下送單會真的送到你原本的 Google Forms，只是密碼欄不會跟著傳送。 
-
 <!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -664,5 +601,3 @@ document.getElementById('submit')?.addEventListener('click', async () => {
 </script>
 </body>
 </html>
-連成代儲_Robux_BuilderSans_GoogleForms版.html
-HTML
