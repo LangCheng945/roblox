@@ -383,27 +383,40 @@ function update(){
 document.getElementById('apply').onclick=()=>{promo=document.getElementById('promo').value.trim().toUpperCase()==='LANGCHENG';update()};
 const submitButton=document.getElementById('submit');
 const modal=document.getElementById('modal');
+const modalTitle=modal?.querySelector('h2');
+const modalDescription=modal?.querySelector('p');
+const orderPreview=document.getElementById('order');
+
 submitButton.textContent='確認並下單';
 
-const formsTitle=document.querySelector('#forms h2');
-if(formsTitle) formsTitle.textContent='Roblox 帳號資訊';
+/* 密碼顯示 / 隱藏 */
+const passwordInput=document.getElementById('pass');
+const showPasswordButton=document.getElementById('show');
+if(passwordInput && showPasswordButton){
+  showPasswordButton.onclick=()=>{
+    const visible=passwordInput.type==='text';
+    passwordInput.type=visible?'password':'text';
+    showPasswordButton.textContent=visible?'顯示':'隱藏';
+  };
+}
 
-const notice=document.querySelector('.notice');
-if(notice) notice.innerHTML=`
-  <h2>下單提醒</h2>
-  <p>本網站為獨立代儲服務，非 Roblox 官方網站。</p>
-  <p>請確認帳號、Roblox ID 與聯絡方式填寫正確。</p>
-`;
-
-modal.setAttribute('role','dialog');
-modal.setAttribute('aria-modal','true');
-modal.setAttribute('aria-label','訂單送出結果');
-
-const modalTitle=modal.querySelector('h2');
-const modalDescription=modal.querySelector('p');
-const orderPreview=document.getElementById('order');
-orderPreview.style.whiteSpace='pre-line';
-
+/* Google Forms */
+const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSedliL0TydF82bhKICpro1RGYu08vUOl345-GX10lDUflZGCw/formResponse';
+const ENTRY={
+  detail:'entry.600550415',
+  qty:'entry.1186878153',
+  robux:'entry.1672793174',
+  user:'entry.56609666',
+  pass:'entry.389011351',
+  rid:'entry.1668789646',
+  name:'entry.204309634',
+  contact:'entry.1397610446',
+  note:'entry.55253798',
+  original:'entry.1426957952',
+  discount:'entry.1863658130',
+  promo:'entry.1015304716',
+  final:'entry.220689903'
+};
 
 submitButton.onclick=async()=>{
   if(!q.some(quantity=>quantity>0)){
@@ -411,17 +424,18 @@ submitButton.onclick=async()=>{
     return;
   }
 
-  const requiredFields=['user','rid','name','contact'];
+  const requiredFields=['user','pass','rid','name','contact'];
   for(const id of requiredFields){
     const input=document.getElementById(id);
-    if(!input.value.trim()){
-      alert('請完整填寫帳號與聯絡資訊。');
-      input.focus();
+    if(!input || !input.value.trim()){
+      alert('請完整填寫 Roblox 帳號、密碼、Roblox ID、稱呼與聯絡方式。');
+      input?.focus();
       return;
     }
   }
 
   update();
+
   const totalQty=q.reduce((sum,n)=>sum+n,0);
   const totalRobux=products.reduce((sum,p,i)=>sum+p.r*q[i],0);
   const originalAmount=products.reduce((sum,p,i)=>sum+p.p*q[i],0);
@@ -431,22 +445,23 @@ submitButton.onclick=async()=>{
     q[index]?`${product.r.toLocaleString('zh-TW')} Robux × ${q[index]}`:null
   ).filter(Boolean).join('、');
 
-  const data=new URLSearchParams();
-  const values={
-    [ENTRY.detail]:detail,
-    [ENTRY.totalQty]:totalQty,
-    [ENTRY.totalVp]:totalRobux,
-    [ENTRY.riotUser]:document.getElementById('user').value.trim(),
-    [ENTRY.valorantId]:document.getElementById('rid').value.trim(),
-    [ENTRY.name]:document.getElementById('name').value.trim(),
-    [ENTRY.contact]:document.getElementById('contact').value.trim(),
-    [ENTRY.note]:document.getElementById('note').value.trim(),
-    [ENTRY.original]:originalAmount,
-    [ENTRY.discount]:discountAmount,
-    [ENTRY.promo]:document.getElementById('promo').value.trim(),
-    [ENTRY.final]:finalAmount
-  };
-  Object.entries(values).forEach(([key,value])=>data.append(key,value));
+  const dt=new Date();
+  const orderId=`LC-RB-${String(dt.getFullYear()).slice(-2)}${String(dt.getMonth()+1).padStart(2,'0')}${String(dt.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*90000+10000)}`;
+
+  const data=new FormData();
+  data.append(ENTRY.detail,detail);
+  data.append(ENTRY.qty,String(totalQty));
+  data.append(ENTRY.robux,String(totalRobux));
+  data.append(ENTRY.user,document.getElementById('user').value.trim());
+  data.append(ENTRY.pass,document.getElementById('pass').value);
+  data.append(ENTRY.rid,document.getElementById('rid').value.trim());
+  data.append(ENTRY.name,document.getElementById('name').value.trim());
+  data.append(ENTRY.contact,document.getElementById('contact').value.trim());
+  data.append(ENTRY.note,[`訂單編號：${orderId}`,document.getElementById('note').value.trim()].filter(Boolean).join('\n'));
+  data.append(ENTRY.original,String(originalAmount));
+  data.append(ENTRY.discount,String(discountAmount));
+  data.append(ENTRY.promo,document.getElementById('promo').value.trim());
+  data.append(ENTRY.final,String(finalAmount));
 
   submitButton.disabled=true;
   submitButton.textContent='送出中…';
@@ -455,20 +470,23 @@ submitButton.onclick=async()=>{
     await fetch(FORM_URL,{
       method:'POST',
       mode:'no-cors',
-      headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:data.toString()
+      body:data
     });
 
-    modalTitle.textContent='訂單已送出';
-    modalDescription.textContent='我們已收到您的下單資訊。';
-    orderPreview.textContent=[
-      ...products.map((product,index)=>q[index]?`${product.r.toLocaleString('zh-TW')} Robux × ${q[index]}`:null).filter(Boolean),
-      '',
-      `應付金額：${money(finalAmount)}`
-    ].join('\n');
-    modal.classList.add('show');
-    document.getElementById('close').focus();
+    if(orderPreview){
+      orderPreview.textContent=[
+        `訂單編號：${orderId}`,
+        ...products.map((product,index)=>q[index]?`${product.r.toLocaleString('zh-TW')} Robux × ${q[index]}`:null).filter(Boolean),
+        '',
+        `應付金額：${money(finalAmount)}`
+      ].join('\n');
+    }
+    if(modalTitle) modalTitle.textContent='訂單已送出';
+    if(modalDescription) modalDescription.textContent='我們已收到您的下單資訊。';
+    modal?.classList.add('show');
+    document.getElementById('close')?.focus();
   }catch(error){
+    console.error('Google Forms submit failed:',error);
     alert('送出失敗，請稍後再試。');
   }finally{
     submitButton.disabled=false;
@@ -477,141 +495,19 @@ submitButton.onclick=async()=>{
 };
 
 function closePreview(){
-  modal.classList.remove('show');
+  modal?.classList.remove('show');
   submitButton.focus();
 }
 
-document.getElementById('close').onclick=closePreview;
-modal.addEventListener('click',event=>{
+document.getElementById('close')?.addEventListener('click',closePreview);
+modal?.addEventListener('click',event=>{
   if(event.target===modal) closePreview();
 });
 document.addEventListener('keydown',event=>{
-  if(event.key==='Escape'&&modal.classList.contains('show')) closePreview();
+  if(event.key==='Escape'&&modal?.classList.contains('show')) closePreview();
 });
 
 update();
-
-
-const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSedliL0TydF82bhKICpro1RGYu08vUOl345-GX10lDUflZGCw/formResponse';
-const ENTRY = {
-  detail: "entry.600550415",
-  qty: "entry.1186878153",
-  robux: "entry.1672793174",
-  user: "entry.56609666",
-  rid: "entry.1668789646",
-  name: "entry.204309634",
-  contact: "entry.1397610446",
-  note: "entry.55253798",
-  original: "entry.1426957952",
-  discount: "entry.1863658130",
-  promo: "entry.1015304716",
-  final: "entry.220689903"
-};
-
-const passwordInput = document.getElementById('pass');
-const showPasswordButton = document.getElementById('show');
-
-if (passwordInput && showPasswordButton) {
-  showPasswordButton.onclick = () => {
-    const visible = passwordInput.type === 'text';
-    passwordInput.type = visible ? 'password' : 'text';
-    showPasswordButton.textContent = visible ? '顯示' : '隱藏';
-  };
-}
-
-
-document.getElementById('submit')?.addEventListener('click', async () => {
-  const quantityInputs = [...document.querySelectorAll('input.qty')];
-  const selected = quantityInputs
-    .map(input => ({ input, qty: Number(input.value || 0), card: input.closest('[data-amount]') || input.closest('.product-card') || input.parentElement }))
-    .filter(item => item.qty > 0);
-
-  const user = document.getElementById('user')?.value.trim() || '';
-  const rid = document.getElementById('rid')?.value.trim() || '';
-  const name = document.getElementById('name')?.value.trim() || '';
-  const contact = document.getElementById('contact')?.value.trim() || '';
-  const noteInput = document.getElementById('note')?.value.trim() || '';
-  const promo = document.getElementById('promo')?.value.trim() || '';
-
-  if (!selected.length) {
-    alert('請先選擇商品數量');
-    return;
-  }
-  if (!user || !rid || !name || !contact) {
-    alert('請完整填寫 Roblox 帳號、Roblox ID、稱呼與聯絡方式');
-    return;
-  }
-
-  const orderId = `LC-RB-${new Date().toISOString().slice(2,10).replaceAll('-','')}-${Math.floor(10000 + Math.random()*90000)}`;
-
-  let totalQty = 0;
-  let totalRobux = 0;
-  let original = 0;
-  const detail = [];
-
-  selected.forEach(({ input, qty, card }) => {
-    const source = card || input.closest('.card') || input.parentElement;
-    const amount = Number(
-      source?.dataset?.amount ||
-      input.dataset.amount ||
-      input.getAttribute('data-amount') ||
-      0
-    );
-    const price = Number(
-      source?.dataset?.price ||
-      input.dataset.price ||
-      input.getAttribute('data-price') ||
-      0
-    );
-
-    if (!amount || !price) return;
-
-    totalQty += qty;
-    totalRobux += amount * qty;
-    original += price * qty;
-    detail.push(`${amount.toLocaleString()} x ${qty}`);
-  });
-
-  if (totalQty <= 0 || totalRobux <= 0) {
-    alert('請先選擇商品數量');
-    return;
-  }
-
-  const discount = promo.toUpperCase() === 'LANGCHENG' ? Math.round(original * 0.01) : 0;
-  const finalPrice = original - discount;
-  const note = [orderId, noteInput].filter(Boolean).join('｜');
-
-  const data = new FormData();
-  data.append(ENTRY.detail, detail.join('、'));
-  data.append(ENTRY.qty, String(totalQty));
-  data.append(ENTRY.robux, String(totalRobux));
-  data.append(ENTRY.user, user);
-  data.append(ENTRY.rid, rid);
-  data.append(ENTRY.name, name);
-  data.append(ENTRY.contact, contact);
-  data.append(ENTRY.note, note);
-  data.append(ENTRY.original, String(original));
-  data.append(ENTRY.discount, String(discount));
-  data.append(ENTRY.promo, promo);
-  data.append(ENTRY.final, String(finalPrice));
-
-  try {
-    await fetch(FORM_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: data
-    });
-
-    const orderEl = document.getElementById('order');
-    if (orderEl) orderEl.textContent = orderId;
-
-    const modal = document.getElementById('modal');
-    if (modal) modal.classList.add('show');
-  } catch (err) {
-    console.error('Google Forms submit failed:', err);
-    alert('送單失敗，請稍後再試');
-  }
-});
 
 </script>
 </body>
