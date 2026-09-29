@@ -67,8 +67,8 @@ button{cursor:pointer}
 .amount span{font-size:14px;font-weight:650;color:var(--muted);margin-left:5px}
 .sub{font-size:12px;color:#8b8d93;margin-top:5px}
 .for-you{display:inline-flex;align-items:center;margin-left:8px;padding:3px 7px;border-radius:999px;background:var(--blue-soft);color:#2866c8;font-size:11px;font-weight:800;vertical-align:middle}
-.price{min-width:116px;border:0;border-radius:10px;padding:11px 16px;background:#eceef1;color:#23252a;font-weight:600;text-align:center;white-space:nowrap}
-.product.selected .price{background:var(--blue);color:#fff}
+.price{min-width:auto;border:0;border-radius:0;padding:0;background:transparent;color:#4d5158;font-size:18px;font-weight:750;text-align:left;white-space:nowrap;line-height:1.1}
+.product.selected .price{background:transparent;color:var(--blue)}
 .qty{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:4px;background:#fff}
 .qty button{width:29px;height:29px;border:0;border-radius:7px;background:#f0f1f3;color:#25272b;font-size:19px;line-height:1}
 .qty .n{width:23px;text-align:center;font-weight:800;font-size:14px}
@@ -118,7 +118,7 @@ textarea{min-height:110px;resize:vertical}
  .product{grid-template-columns:45px minmax(0,1fr) auto;gap:12px;padding:13px 15px}
  .robux-icon{width:38px;height:38px}
  .qty{grid-column:2 / 4;justify-self:end;margin-top:-4px}
- .price{min-width:98px;padding:10px 12px}
+ .price{min-width:auto;padding:0;font-size:18px}
  .content-grid,.form-grid{grid-template-columns:1fr}
  .summary{position:static}
 }
@@ -139,7 +139,7 @@ textarea{min-height:110px;resize:vertical}
  .section-title small{display:none}
  .amount{font-size:21px}
  .product{grid-template-columns:42px minmax(0,1fr);padding:13px 14px}
- .price{grid-column:2;justify-self:start;margin-top:2px}
+ .price{grid-column:2;justify-self:start;margin-top:7px}
  .qty{grid-column:2;justify-self:end;grid-row:2}
  .product-main{grid-column:2}
  .robux-icon{grid-row:1 / span 2;align-self:start;margin-top:5px}
