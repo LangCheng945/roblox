@@ -151,16 +151,29 @@ textarea{min-height:110px;resize:vertical}
 /* selected package label */
 .selected-500-label{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 8px;border-radius:999px;background:#e8f1ff;color:#1677ff;font-size:12px;font-weight:550;line-height:1;}
 </style>
-<style id="mobile-hero-adjust">
+<style id="mobile-hero-adjust-v2">
 @media(max-width:520px){
-  /* 手機：把主標題往上提，縮短品牌區與主標題之間的空白 */
-  .hero-inner{
-    padding-top:80px !important;
-    padding-bottom:70px !important;
+  /* 手機：整個 Hero 再壓縮，讓商品區更早出現 */
+  .hero{
+    min-height:270px !important;
   }
-  /* 背景往上移，讓右下角角色的臉露出更多 */
+
+  /* 品牌 Header 保持原位置，主標題往上收 */
+  .hero-inner{
+    padding-top:50px !important;
+    padding-bottom:30px !important;
+    transform:translateY(-10px);
+  }
+
+  /* 放大背景並向上裁切，讓 Roblox 人物的臉進入 Hero 可視區 */
   body::before{
-    background-position:60% 78% !important;
+    background-size:auto 125vh !important;
+    background-position:60% 64% !important;
+  }
+
+  /* 商品卡再往上貼一點 */
+  .wrap{
+    margin-top:-24px !important;
   }
 }
 </style>
