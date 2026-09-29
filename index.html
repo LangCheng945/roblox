@@ -393,7 +393,6 @@ if(notice) notice.innerHTML=`
   <h2>下單提醒</h2>
   <p>本網站為獨立代儲服務，非 Roblox 官方網站。</p>
   <p>請確認帳號、Roblox ID 與聯絡方式填寫正確。</p>
-  <p>密碼欄位僅保留原本介面，<strong>不會傳送至 Google Forms</strong>。</p>
 `;
 
 modal.setAttribute('role','dialog');
@@ -405,7 +404,7 @@ const modalDescription=modal.querySelector('p');
 const orderPreview=document.getElementById('order');
 orderPreview.style.whiteSpace='pre-line';
 
-// 原本 Google Forms 送單設定；密碼 entry 刻意不使用
+
 submitButton.onclick=async()=>{
   if(!q.some(quantity=>quantity>0)){
     alert('請至少選擇一項 Robux 商品。');
@@ -522,10 +521,10 @@ if (passwordInput && showPasswordButton) {
 
 
 document.getElementById('submit')?.addEventListener('click', async () => {
-  const selected = [...document.querySelectorAll('.product')].filter(el => {
-    const qty = el.querySelector('.qty');
-    return qty && Number(qty.value || 0) > 0;
-  });
+  const quantityInputs = [...document.querySelectorAll('input.qty')];
+  const selected = quantityInputs
+    .map(input => ({ input, qty: Number(input.value || 0), card: input.closest('[data-amount]') || input.closest('.product-card') || input.parentElement }))
+    .filter(item => item.qty > 0);
 
   const user = document.getElementById('user')?.value.trim() || '';
   const rid = document.getElementById('rid')?.value.trim() || '';
@@ -550,22 +549,39 @@ document.getElementById('submit')?.addEventListener('click', async () => {
   let original = 0;
   const detail = [];
 
-  selected.forEach(card => {
-    const amount = Number(card.dataset.amount || 0);
-    const price = Number(card.dataset.price || 0);
-    const qty = Number(card.querySelector('.qty')?.value || 0);
-    if (!qty) return;
+  selected.forEach(({ input, qty, card }) => {
+    const source = card || input.closest('.card') || input.parentElement;
+    const amount = Number(
+      source?.dataset?.amount ||
+      input.dataset.amount ||
+      input.getAttribute('data-amount') ||
+      0
+    );
+    const price = Number(
+      source?.dataset?.price ||
+      input.dataset.price ||
+      input.getAttribute('data-price') ||
+      0
+    );
+
+    if (!amount || !price) return;
+
     totalQty += qty;
     totalRobux += amount * qty;
     original += price * qty;
     detail.push(`${amount.toLocaleString()} x ${qty}`);
   });
 
+  if (totalQty <= 0 || totalRobux <= 0) {
+    alert('請先選擇商品數量');
+    return;
+  }
+
   const discount = promo.toUpperCase() === 'LANGCHENG' ? Math.round(original * 0.01) : 0;
   const finalPrice = original - discount;
   const note = [orderId, noteInput].filter(Boolean).join('｜');
 
-  const data = new URLSearchParams();
+  const data = new FormData();
   data.append(ENTRY.detail, detail.join('、'));
   data.append(ENTRY.qty, String(totalQty));
   data.append(ENTRY.robux, String(totalRobux));
@@ -583,8 +599,7 @@ document.getElementById('submit')?.addEventListener('click', async () => {
     await fetch(FORM_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-      body: data.toString()
+      body: data
     });
 
     const orderEl = document.getElementById('order');
