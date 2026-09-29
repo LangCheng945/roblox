@@ -292,6 +292,15 @@ html,body,button,input,textarea{
 .price{font-weight:500}
 </style>
 
+
+<style id="order-modal-wrap-fix">
+/* 訂單彈窗內容保留換行 */
+.order{
+  white-space:pre-line !important;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+</style>
 </head>
 <body>
 <header class="hero">
@@ -380,7 +389,16 @@ function update(){
   document.getElementById('discount').textContent='- '+money(d);
   document.getElementById('final').textContent=money(o-d);
 }
-document.getElementById('apply').onclick=()=>{promo=document.getElementById('promo').value.trim().toUpperCase()==='LANGCHENG';update()};
+const promoInput=document.getElementById('promo');
+const applyPromo=()=>{
+  promo=promoInput.value.trim().toUpperCase()==='LANGCHENG';
+  update();
+};
+
+/* 優惠碼輸入時即時套用折扣，不必再按「套用」 */
+promoInput?.addEventListener('input',applyPromo);
+promoInput?.addEventListener('change',applyPromo);
+document.getElementById('apply').onclick=applyPromo;
 const submitButton=document.getElementById('submit');
 const modal=document.getElementById('modal');
 const modalTitle=modal?.querySelector('h2');
