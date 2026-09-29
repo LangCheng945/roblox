@@ -135,14 +135,17 @@ textarea{min-height:110px;resize:vertical}
  .hero{min-height:305px;background-position:center center}
  .hero-inner{width:min(100% - 24px,1120px);padding-bottom:40px}
  .wrap{width:calc(100% - 24px);margin-top:-18px}
- .section-title{padding:18px 16px 12px}
+ .section-title{padding:16px 16px 10px}
  .section-title small{display:none}
+ .section-title h2{font-size:24px;margin:0}
  .amount{font-size:21px}
- .product{grid-template-columns:42px minmax(0,1fr);padding:13px 14px}
- .price{margin-left:8px;font-size:16px}
- .qty{grid-column:2;justify-self:end;grid-row:2}
- .product-main{grid-column:2}
- .robux-icon{grid-row:1 / span 2;align-self:start;margin-top:5px}
+ .product{grid-template-columns:42px minmax(0,1fr) auto;gap:10px;min-height:64px;padding:10px 14px}
+ .price{margin-left:7px;font-size:15px}
+ .qty{grid-column:3;grid-row:1;justify-self:end;align-self:center}
+ .product-main{grid-column:2;grid-row:1;align-self:center}
+ .robux-icon{grid-column:1;grid-row:1;align-self:center;margin-top:0}
+ .qty button{width:28px;height:28px}
+ .qty .n{width:21px;font-size:14px}
  .content-grid,.form-grid{gap:12px;margin-top:12px}
  .panel,.summary,.formbox,.notice{border-radius:14px}
 }
@@ -208,7 +211,6 @@ textarea{min-height:110px;resize:vertical}
     <div class="field"><label for="contact">聯絡方式</label><input id="contact" placeholder="LINE、Discord、Email 等"></div>
     <div class="field"><label for="note">備註</label><textarea id="note" placeholder="有其他需求可以寫在這裡"></textarea></div>
     <div class="notice"><h2>注意事項</h2><p>請確認 Roblox 帳號、密碼與 Roblox ID 填寫正確，避免影響訂單處理。</p><p>訂單送出後由人工確認與處理，實際處理時間會依當下訂單量而有所不同。</p><p>付款方式與後續操作將於聯絡後確認。</p></div>
-    <div class="submit"><button id="submit">確認並下單</button></div>
   </section>
 
   <aside class="panel summary">
@@ -220,6 +222,7 @@ textarea{min-height:110px;resize:vertical}
     <div class="row"><span>優惠</span><strong id="discount">- NT$ 0</strong></div>
     <div class="total"><strong>應付金額</strong><strong id="final">NT$ 0</strong></div>
     <div class="info"><h4>交易方式</h4><p>提供多種支付方式，實際付款方式以聯絡後確認為準。</p><h4>提醒</h4><p>送出前請再次確認帳號資訊與購買數量。</p></div>
+    <div class="submit"><button id="submit">確認並下單</button></div>
   </aside>
 </div>
 </div>
