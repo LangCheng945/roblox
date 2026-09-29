@@ -376,7 +376,7 @@ const list=document.getElementById('products');
 products.forEach((x,i)=>{
   const el=document.createElement('div');
   el.className='product';
-  el.innerHTML=`<img class="robux-icon" src="${icon}" alt="Robux"><div class="product-main"><div class="amount">${x.r.toLocaleString('zh-TW')}<span>Robux</span><span class="price">${money(x.p)}</span>${x.r===500?'<span class="for-you">For you</span>':''}</div></div><div class="qty"><button type="button" data-a="m">−</button><div class="n">0</div><button type="button" data-a="p">+</button></div>`;
+  el.innerHTML=`<img class="robux-icon" src="${icon}" alt="Robux"><div class="product-main"><div class="amount">${x.r.toLocaleString('zh-TW')}<span class="price">${money(x.p)}</span>${x.r===500?'<span class="for-you">For you</span>':''}</div></div><div class="qty"><button type="button" data-a="m">−</button><div class="n">0</div><button type="button" data-a="p">+</button></div>`;
   el.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',e=>{
     e.stopPropagation(); const a=btn.dataset.a;
     if(!a)return;
