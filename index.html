@@ -189,7 +189,7 @@ textarea{min-height:110px;resize:vertical}
   </div>
   <div class="hero-inner">
     <h1>Robux <b>快速下單</b></h1>
-    <p>快速下單・安全方便・人工處理</p>
+    
   </div>
 </header>
 <div class="wrap">
@@ -219,7 +219,7 @@ textarea{min-height:110px;resize:vertical}
     <div class="promo"><label for="promo">優惠碼</label><div class="promo-line"><input id="promo" value="LANGCHENG" autocomplete="off"><button type="button" id="apply">套用</button></div></div>
     <div class="row"><span>優惠</span><strong id="discount">- NT$ 0</strong></div>
     <div class="total"><strong>應付金額</strong><strong id="final">NT$ 0</strong></div>
-    <div class="info"><h4>交易方式</h4><p>提供多種支付方式，實際付款方式以聯絡後確認為準。</p><h4>處理時間</h4><p>人工處理，通常會盡快完成。</p><h4>提醒</h4><p>送出前請再次確認帳號資訊與購買數量。</p></div>
+    <div class="info"><h4>交易方式</h4><p>提供多種支付方式，實際付款方式以聯絡後確認為準。</p><h4>提醒</h4><p>送出前請再次確認帳號資訊與購買數量。</p></div>
   </aside>
 </div>
 </div>
@@ -239,7 +239,7 @@ const list=document.getElementById('products');
 products.forEach((x,i)=>{
   const el=document.createElement('div');
   el.className='product';
-  el.innerHTML=`<img class="robux-icon" src="${icon}" alt="Robux"><div class="product-main"><div class="amount">${x.r.toLocaleString('zh-TW')}<span>Robux</span>${x.r===500?'<span class="for-you">For you</span>':''}</div><div class="sub">人工處理・快速下單</div></div><div class="qty"><button type="button" data-a="m">−</button><div class="n">0</div><button type="button" data-a="p">+</button></div><button type="button" class="price">${money(x.p)}</button>`;
+  el.innerHTML=`<img class="robux-icon" src="${icon}" alt="Robux"><div class="product-main"><div class="amount">${x.r.toLocaleString('zh-TW')}<span>Robux</span>${x.r===500?'<span class="for-you">For you</span>':''}</div></div><div class="qty"><button type="button" data-a="m">−</button><div class="n">0</div><button type="button" data-a="p">+</button></div><button type="button" class="price">${money(x.p)}</button>`;
   el.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',e=>{
     e.stopPropagation(); const a=btn.dataset.a;
     if(!a)return;
