@@ -22,7 +22,7 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
 .menu{border:1px solid rgba(255,255,255,.45);background:rgba(0,45,110,.24);color:#fff;border-radius:12px;width:44px;height:44px;font-size:21px;backdrop-filter:blur(12px)}
 .hero{padding:20px 12px 28px;color:#fff;text-shadow:0 3px 18px rgba(0,27,85,.45)}
 .kicker{font-size:13px;font-weight:800;letter-spacing:2px;color:#c9e8ff}.hero h1{margin:5px 0 6px;font-size:clamp(38px,6vw,68px);line-height:1;font-weight:950;letter-spacing:-2px}.hero h1 em{font-style:normal;color:#0d8dff}.hero p{margin:0;color:rgba(255,255,255,.9);font-size:15px}
-.layout{display:grid;gap:18px}.panel{background:var(--panel);border:1px solid rgba(255,255,255,.85);box-shadow:var(--shadow);border-radius:18px;padding:20px;backdrop-filter:blur(18px)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid rgba(255,255,255,.85);box-shadow:var(--shadow);border-radius:18px;padding:20px;backdrop-filter:blur(18px)}
 .panel-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px}.panel-title h2{margin:0;font-size:22px;font-weight:950}.panel-title small{font-size:10px;color:#7c8fa9;font-weight:800;letter-spacing:1px}
 .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{background:rgba(255,255,255,.74);border:1px solid #d9e8f7;border-radius:15px;padding:18px 15px 14px;box-shadow:0 5px 20px rgba(45,100,160,.06);text-align:center}.card:nth-child(7){grid-column:2}.vpicon{width:58px;height:58px;object-fit:contain;display:block;margin:0 auto 10px}.vp{font-size:18px;font-weight:950;color:#13284c}.price{font-size:23px;font-weight:950;color:var(--orange);margin-top:5px}.qty{display:grid;grid-template-columns:42px 1fr 42px;margin-top:13px;height:40px;border:1px solid #d9e5f2;border-radius:10px;overflow:hidden;background:#eef5fb}.qty button{border:0;background:#e7f0f9;color:#16345c;font-size:22px;font-weight:900}.qty input{border:0;background:#f6faff;text-align:center;font-size:17px;font-weight:900;color:#14294b;outline:none;min-width:0}.qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.qty input[type=number]{-moz-appearance:textfield}
 .summary{display:grid;grid-template-columns:1.3fr .9fr;gap:12px}.summary-box{border:1px solid #d9e8f7;border-radius:13px;background:rgba(255,255,255,.7);padding:18px}.empty{text-align:center;color:#8395ad;padding:18px}.empty strong{display:block;color:#536985;font-size:16px;margin-bottom:5px}.summary-lines{display:grid;gap:11px}.sumrow{display:flex;justify-content:space-between;border-bottom:1px solid #e4edf6;padding-bottom:10px;color:#6d8099}.sumrow:last-child{border-bottom:0;padding-bottom:0}.sumrow strong{color:#172a4a}.sumrow.final{font-size:19px}.sumrow.final strong:last-child{color:var(--orange);font-size:27px}
@@ -55,7 +55,7 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
     letter-spacing:-1.2px;
   }
   .hero p{font-size:13px}
-  .layout{gap:12px}
+  .layout{grid-template-columns:1fr;gap:12px}
   .panel{
     width:100%;
     padding:12px;
@@ -201,7 +201,7 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
     <div class="row"><span>總數量</span><strong class="accent" id="totalQty">0 份</strong></div>
     <div class="row"><span>總 Robux</span><strong class="accent" id="totalVp">0 Robux</strong></div>
     <div class="row"><span>原始金額</span><strong id="original">NT$ 0</strong></div>
-    <div class="row code-row"><span>優惠碼</span><input id="promo" value="LANGCHENG" aria-label="優惠碼"></div>
+    <div class="row code-row"><span>優惠碼</span><input id="promo" value="LANGCHENG97" aria-label="優惠碼"></div>
     <div class="row"><span>優惠金額</span><strong style="color:#20d67b" id="discount">- NT$ 0</strong></div>
   </div>
   <div class="total"><span>應付金額</span><strong id="final">NT$ 0</strong></div>
